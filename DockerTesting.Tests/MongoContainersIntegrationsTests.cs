@@ -27,7 +27,7 @@ namespace DockerTesting.Tests
     public class MongoContainersIntegrationsTests
     {
 
-        [Test]
+        [Test,Ignore]
         public async Task GetPorts()
         {
             var dockerUrl = new Uri(Environment.GetEnvironmentVariable("DOCKER_URL"));
