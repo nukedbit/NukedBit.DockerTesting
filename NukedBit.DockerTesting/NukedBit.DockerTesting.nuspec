@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>NukedBit.DockerTesting</id>
+    <version>$version$</version>
+    <authors>nukedbit</authors>
+    <owners>nukedbit</owners>
+    <licenseUrl>https://github.com/nukedbit/NukedBit.DockerTesting/blob/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/nukedbit/NukedBit.DockerTesting/</projectUrl>
+
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>provide a facility to execute a container on a dev machine and get open ports</description>
+    <releaseNotes>Alpha release.</releaseNotes>
+    <copyright>Copyright 2015</copyright>
+    <tags>mongodb docker</tags>
+  </metadata>
+  <files>
+	<file src="bin\release\*.dll" target="lib\net45" />
+  </files>
+</package>
