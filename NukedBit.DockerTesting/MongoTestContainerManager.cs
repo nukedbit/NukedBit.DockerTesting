@@ -32,10 +32,10 @@ namespace NukedBit.DockerTesting
         readonly string name;
         string id;
 
-        public MongoTestContainerManager(DockerClient client, string image, string name)
+        public MongoTestContainerManager(DockerClient client, string name)
         {
             this.name = name;
-            this.image = image;
+            this.image = "tutum/mongodb";
             this.client = client;
         }
 

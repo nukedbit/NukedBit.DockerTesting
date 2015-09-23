@@ -40,7 +40,10 @@ namespace DockerTesting.Tests
                 var started = await testContainer.CreateAndStart();
                 var ports = await testContainer.GetMongoPorts();
                 Assert.AreEqual(28017, ports[0].PrivatePort);
-                Assert.AreEqual(27017, ports[1].PrivatePort);                
+                Assert.AreEqual(27017, ports[1].PrivatePort);
+
+                Assert.AreEqual(30017, ports[0].PublicPort);
+                Assert.AreEqual(29017, ports[1].PublicPort);
             }
             finally
             {
