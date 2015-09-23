@@ -25,35 +25,29 @@ using System.Threading.Tasks;
 
 namespace NukedBit.DockerTesting
 {
-    public class MongoTestContainerManager
-    {
-        readonly DockerClient client;
-        readonly string image;
-        readonly string name;
-        string id;
 
-        public MongoTestContainerManager(DockerClient client, string name)
+    public class MongoContainerManager:ContainerManager
+    {
+        readonly string name;
+
+        public MongoContainerManager(DockerClient client, string name):base(client, "tutum/mongodb")
         {
             this.name = name;
-            this.image = "tutum/mongodb";
-            this.client = client;
         }
 
         public async Task<bool> CreateAndStart()
         {
-            var response = await client.Containers.CreateContainerAsync(new CreateContainerParameters()
+            await this.CreateAsync(new CreateContainerParameters()
             {
                 Config = new Config()
                 {
                     Env = new[] {"AUTH=no"},
-                    Image = image,
+                    Image = this.Image,
                 },
                 ContainerName = name,
             });
 
-            id = response.Id;
-
-            return await client.Containers.StartContainerAsync(id, new HostConfig()
+            return await StartAsync(new HostConfig()
             {               
                 PortBindings = new Dictionary<string, IList<PortBinding>>
                 {
@@ -66,24 +60,7 @@ namespace NukedBit.DockerTesting
 
         public async Task<IList<Port>> GetMongoPorts()
         {
-            await Task.Delay(TimeSpan.FromSeconds(20));
-            var response = await client.Containers.ListContainersAsync(new ListContainersParameters());
-            var container = response.SingleOrDefault(c => c.Image == image);
-            return container.Ports;
+            return await GetPorts();
         }
-
-
-        public async Task Stop()
-        {
-            await client.Containers.StopContainerAsync(id, new StopContainerParameters
-            {
-                Wait = TimeSpan.FromSeconds(30)
-            }, CancellationToken.None);
-            await client.Containers.RemoveContainerAsync(id, new RemoveContainerParameters
-            {
-                Force = true,
-                RemoveVolumes = true
-            });
-        } 
     }
 }
