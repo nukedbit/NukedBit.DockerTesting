@@ -1,5 +1,8 @@
 # NukedBit DockerTesting
 
+[![Build status](https://ci.appveyor.com/api/projects/status/1u8x31rhemdjjh0h/branch/master?svg=true)](https://ci.appveyor.com/project/nukedbit/nukedbit-dockertesting/branch/master)
+
+
 This library was developed for easy and quick provision of a docker image using DockerRemote Api.
 
 Currently only mongodb container is implemented using tutum/mongodb
