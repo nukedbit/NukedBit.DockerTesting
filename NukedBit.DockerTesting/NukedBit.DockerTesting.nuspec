@@ -13,11 +13,11 @@
     <releaseNotes>Alpha release.</releaseNotes>
     <copyright>Copyright 2015</copyright>
     <tags>mongodb docker</tags>
+	<dependencies>
+	  <dependency id="Docker.DotNet" version="1.2.0" />
+	</dependencies>  	
   </metadata>
   <files>
 	<file src="bin\release\*.dll" target="lib\net45" />
   </files>
-	<dependencies>
-	  <dependency id="Docker.DotNet" version="1.2.0" />
-	</dependencies>  
 </package>
