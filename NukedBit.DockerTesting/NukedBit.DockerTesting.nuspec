@@ -17,4 +17,7 @@
   <files>
 	<file src="bin\release\*.dll" target="lib\net45" />
   </files>
+	<dependencies>
+	  <dependency id="Docker.DotNet" version="1.2.0" />
+	</dependencies>  
 </package>
