@@ -12,3 +12,4 @@ Currently only mongodb container is implemented using tutum/mongodb
 Each time the container is stopped the container is also removed so you get a clean container at each start
 
 
+		Install-Package NukedBit.DockerTesting 
