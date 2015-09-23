@@ -14,5 +14,7 @@ Currently only mongodb container is implemented using tutum/mongodb
 
 Each time the container is stopped the container is also removed so you get a clean container at each start
 
+To connect to mongodb you must use the public port that should be 29017 and 30017 for admin
+
 
 		Install-Package NukedBit.DockerTesting 
