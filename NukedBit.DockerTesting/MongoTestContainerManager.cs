@@ -45,14 +45,22 @@ namespace NukedBit.DockerTesting
             {
                 Config = new Config()
                 {
-                    Image = image
+                    Env = new[] {"AUTH=no"},
+                    Image = image,
                 },
-                ContainerName = name
+                ContainerName = name,
             });
 
             id = response.Id;
 
-            return await client.Containers.StartContainerAsync(id, new HostConfig());
+            return await client.Containers.StartContainerAsync(id, new HostConfig()
+            {               
+                PortBindings = new Dictionary<string, IList<PortBinding>>
+                {
+                    {"27017/tcp",new [] { new PortBinding() { HostPort="29017"} } },
+                    {"28017/tcp",new [] { new PortBinding() { HostPort="30017"} } }
+                },
+            });
         }
 
 
