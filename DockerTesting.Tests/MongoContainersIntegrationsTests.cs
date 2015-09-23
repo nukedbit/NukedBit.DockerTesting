@@ -33,7 +33,7 @@ namespace DockerTesting.Tests
             var dockerUrl = new Uri(Environment.GetEnvironmentVariable("DOCKER_URL"));
             DockerClient client = new DockerClientConfiguration(dockerUrl)
                  .CreateClient();
-            var testContainer = new MongoTestContainerManager(client, "tutum/mongodb", "testmongo");
+            var testContainer = new MongoTestContainerManager(client, "testmongo");
 
             try
             {
