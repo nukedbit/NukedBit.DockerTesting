@@ -20,6 +20,8 @@ using NUnit.Framework;
 using Docker.DotNet;
 using System;
 using System.Threading.Tasks;
+using Moq;
+using static System.Environment;
 
 namespace DockerTesting.Tests
 {
@@ -30,15 +32,17 @@ namespace DockerTesting.Tests
         [Test,Explicit]
         public async Task GetPorts()
         {
-            var dockerUrl = new Uri(Environment.GetEnvironmentVariable("DOCKER_URL"));
-            DockerClient client = new DockerClientConfiguration(dockerUrl)
+            var dockerUrl = new Uri(uriString: GetEnvironmentVariable("DOCKER_URL"));
+            var client = new DockerClientConfiguration(dockerUrl)
                  .CreateClient();
-            var testContainer = new MongoContainerManager(client, "testmongo");
+            var factory = new ContainerFactory(client);
+            var testContainer = factory.Create(ContainerType.MongoDb, "testmongo");
 
             try
             {
-                var started = await testContainer.CreateAndStart();
-                var ports = await testContainer.GetMongoPorts();
+                await testContainer.CreateAsync();
+                var started = await testContainer.StartAsync();
+                var ports = await testContainer.GetPorts();
                 Assert.AreEqual(28017, ports[0].PrivatePort);
                 Assert.AreEqual(27017, ports[1].PrivatePort);
 
@@ -50,5 +54,24 @@ namespace DockerTesting.Tests
                 await testContainer.Stop();
             }
         }
+
+        [Test]
+        public void GetMongoDbContainerFromFactory()
+        {
+            var dockerClientMock = new Mock<IDockerClient>();
+            var containerFactory = new ContainerFactory(dockerClientMock.Object);
+            var container = containerFactory.Create(ContainerType.MongoDb, "name");
+            Assert.IsInstanceOf<MongoDbContainer>(container);
+        }
+
+        [Test]
+        public void GetAllExistingsContainerOfType()
+        {
+            var dockerClientMock = new Mock<IDockerClient>();
+            var containerFactory = new ContainerFactory(dockerClientMock.Object);
+            var container = containerFactory.GetAllExistings(ContainerType.MongoDb);
+            Assert.IsInstanceOf<MongoDbContainer>(container);
+        }
+
     }
 }
