@@ -2,6 +2,10 @@
 
 [![Build status](https://ci.appveyor.com/api/projects/status/1u8x31rhemdjjh0h/branch/master?svg=true)](https://ci.appveyor.com/project/nukedbit/nukedbit-dockertesting/branch/master)
 
+## CHANGES
+
+- 29/09/2015 - complete api refactoring now to get the container ContainerFactory must be used
+
 
 This library was developed for easy and quick provision of a docker image using DockerRemote Api, this is aimed to be used on integrations testing, on a private vm, in fact currently no authentication meccanism is provided.
 
