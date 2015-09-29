@@ -44,26 +44,5 @@ namespace NukedBit.DockerTesting
                 return new MongoDbContainer(client, name);
             throw new InvalidOperationException("Invalid container type");
         }
-
-        private static string GetImageName(ContainerType containerType)
-        {
-            if (containerType == ContainerType.MongoDb)
-                return MongoDbContainer.DockerImage;
-            throw new InvalidOperationException("Invalid container type");
-        }
-
-        private Container Create(ContainerType containerType,ContainerListResponse c)
-        {
-            if (containerType == ContainerType.MongoDb)
-                return new MongoDbContainer(this.client,c.Names.First(),c.Id);
-            throw new InvalidOperationException("Invalid container type");
-        }
-
-        public async Task<IEnumerable<Container>> GetAllExistings(ContainerType containerType)
-        {
-            var imageName = GetImageName(containerType);
-            var response = await client.Containers.ListContainersAsync(new ListContainersParameters());
-            return response.Where(c => c.Image == imageName).Select(c => Create(containerType, c));
-        }
     }
 }

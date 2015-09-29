@@ -61,5 +61,26 @@ namespace NukedBit.DockerTesting
                 RemoveVolumes = true
             });
         }
+
+        private static string GetImageName(ContainerType containerType)
+        {
+            if (containerType == ContainerType.MongoDb)
+                return MongoDbContainer.DockerImage;
+            throw new InvalidOperationException("Invalid container type");
+        }
+
+        private static Container Create(IDockerClient client, ContainerType containerType, ContainerListResponse c)
+        {
+            if (containerType == ContainerType.MongoDb)
+                return new MongoDbContainer(client, c.Names.First(), c.Id);
+            throw new InvalidOperationException("Invalid container type");
+        }
+
+        public static async Task<IEnumerable<Container>> GetAllExistings(IDockerClient client, ContainerType containerType)
+        {
+            var imageName = GetImageName(containerType);
+            var response = await client.Containers.ListContainersAsync(new ListContainersParameters());
+            return response.Where(c => c.Image == imageName).Select(c => Create(client,containerType, c));
+        }
     }
 }

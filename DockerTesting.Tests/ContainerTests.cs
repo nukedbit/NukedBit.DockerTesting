@@ -37,8 +37,7 @@ namespace DockerTesting.Tests
         public void GetAllExistingsContainerOfType()
         {
             var dockerClientMock = new Mock<IDockerClient>();
-            var containerFactory = new ContainerFactory(dockerClientMock.Object);
-            var container = containerFactory.GetAllExistings(ContainerType.MongoDb);
+            var container = Container.GetAllExistings(dockerClientMock.Object,ContainerType.MongoDb);
             Assert.IsInstanceOf<MongoDbContainer>(container);
         }
     }
