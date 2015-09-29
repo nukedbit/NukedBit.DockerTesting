@@ -15,7 +15,10 @@
 */
 
 
+using System.Linq;
+using System.Threading.Tasks;
 using Docker.DotNet;
+using Docker.DotNet.Models;
 using Moq;
 using NukedBit.DockerTesting;
 using NUnit.Framework;
@@ -34,11 +37,19 @@ namespace DockerTesting.Tests
         }
 
         [Test]
-        public void GetAllExistingsContainerOfType()
+        public async Task GetAllExistingsContainerOfType()
         {
             var dockerClientMock = new Mock<IDockerClient>();
-            var container = Container.GetAllExistings(dockerClientMock.Object,ContainerType.MongoDb);
-            Assert.IsInstanceOf<MongoDbContainer>(container);
+            var containerOpsMock = new Mock<IContainerOperations>();
+            containerOpsMock.Setup(c => c.ListContainersAsync(It.IsAny<ListContainersParameters>()))
+                .ReturnsAsync(new[]
+                {
+                    new ContainerListResponse() {Image = "tutum/mongodb",Names = new []{"name"}}
+                });
+            dockerClientMock.SetupGet(d => d.Containers).Returns(containerOpsMock.Object);
+
+            var container = await Container.GetAllExistings(dockerClientMock.Object,ContainerType.MongoDb);
+            Assert.IsInstanceOf<MongoDbContainer>(container.First());
         }
     }
 }
