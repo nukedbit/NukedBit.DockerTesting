@@ -29,30 +29,63 @@ namespace DockerTesting.Tests
     public class MongoContainersIntegrationsTests
     {
 
-        [Test,Explicit]
+        [Test, Explicit]
         public async Task GetPorts()
         {
             var dockerUrl = new Uri(uriString: GetEnvironmentVariable("DOCKER_URL"));
             var client = new DockerClientConfiguration(dockerUrl)
                  .CreateClient();
             var factory = new ContainerFactory(client);
-            var testContainer = factory.Create(ContainerType.MongoDb, "testmongo");
+            var container = factory.New(ContainerType.MongoDb, "testmongo");
 
             try
             {
-                await testContainer.CreateAsync();
-                var started = await testContainer.StartAsync();
+                await container.CreateAsync();
+                var started = await container.StartAsync();
                 Assert.IsTrue(started);
-                var ports = await testContainer.GetPorts();
+                await Task.Delay(TimeSpan.FromSeconds(20));
+                var ports = await container.GetPorts();
                 Assert.AreEqual(28017, ports[0].PrivatePort);
                 Assert.AreEqual(27017, ports[1].PrivatePort);
 
-                Assert.AreEqual(30017, ports[0].PublicPort);
-                Assert.AreEqual(29017, ports[1].PublicPort);
+                Assert.IsTrue(ports[0].PublicPort > 0);
+                Assert.IsTrue(ports[1].PublicPort > 0);
             }
             finally
             {
-                await testContainer.Stop();
+                await container.Stop();
+                await container.Remove();
+            }
+        }
+
+
+        [Test, Explicit]
+        public async Task RunMultipleContainers()
+        {
+            var dockerUrl = new Uri(uriString: GetEnvironmentVariable("DOCKER_URL"));
+            var client = new DockerClientConfiguration(dockerUrl)
+                 .CreateClient();
+            var factory = new ContainerFactory(client);
+            var container = factory.New(ContainerType.MongoDb);
+            var container2 = factory.New(ContainerType.MongoDb);
+            try
+            {
+                await container.CreateAsync();
+                var started = await container.StartAsync();
+                Assert.IsTrue(started);
+                await Task.Delay(TimeSpan.FromSeconds(5));
+
+                await container2.CreateAsync();
+                started = await container2.StartAsync();
+                Assert.IsTrue(started);
+                await Task.Delay(TimeSpan.FromSeconds(5));
+            }
+            finally
+            {
+                await container.Stop();
+                await container2.Stop();
+                await container.Remove();
+                await container2.Remove();
             }
         }
     }

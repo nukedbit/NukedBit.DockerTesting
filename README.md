@@ -4,6 +4,8 @@
 
 ## CHANGES
 
+- 01/10/2015 - factory Create renamed to New, new overload without name so you can create dynamically multiple containers
+
 - 29/09/2015 - complete api refactoring now to get the container ContainerFactory must be used
 
 

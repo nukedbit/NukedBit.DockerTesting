@@ -42,12 +42,8 @@ namespace NukedBit.DockerTesting
         public override Task<bool> StartAsync()
         {
             return base.StartAsync(new HostConfig()
-            {
-                PortBindings = new Dictionary<string, IList<PortBinding>>
-                {
-                    {"27017/tcp", new[] {new PortBinding() {HostPort = "29017"}}},
-                    {"28017/tcp", new[] {new PortBinding() {HostPort = "30017"}}}
-                },
+            {               
+                PublishAllPorts = true
             });
         }
 
@@ -58,9 +54,10 @@ namespace NukedBit.DockerTesting
                 Config = new Config()
                 {
                     Env = new[] { "AUTH=no" },
-                    Image = Image,
+                    Image = Image,                    
                 },
-                ContainerName = _name,
+                
+                ContainerName = _name,               
             });
         } 
     }

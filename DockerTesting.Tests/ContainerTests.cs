@@ -32,7 +32,7 @@ namespace DockerTesting.Tests
         {
             var dockerClientMock = new Mock<IDockerClient>();
             var containerFactory = new ContainerFactory(dockerClientMock.Object);
-            var container = containerFactory.Create(ContainerType.MongoDb, "name");
+            var container = containerFactory.New(ContainerType.MongoDb, "name");
             Assert.IsInstanceOf<MongoDbContainer>(container);
         }
 

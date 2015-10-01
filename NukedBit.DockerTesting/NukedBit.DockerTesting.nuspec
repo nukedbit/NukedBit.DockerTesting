@@ -10,7 +10,7 @@
 
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>provide a facility to execute a container on a dev machine and get open ports</description>
-    <releaseNotes>Alpha release. removed delay on getports</releaseNotes>
+    <releaseNotes>Alpha release. factory Create renamed to New, new overload without name so is dynamically created</releaseNotes>
     <copyright>Copyright 2015</copyright>
     <tags>mongodb docker</tags>
 	<dependencies>

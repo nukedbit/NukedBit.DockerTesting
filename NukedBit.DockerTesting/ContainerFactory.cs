@@ -38,11 +38,16 @@ namespace NukedBit.DockerTesting
             this.client = client;
         }
 
-        public Container Create(ContainerType containerType, string name)
+        public Container New(ContainerType containerType, string name)
         {
             if (containerType == ContainerType.MongoDb)
                 return new MongoDbContainer(client, name);
             throw new InvalidOperationException("Invalid container type");
+        }
+
+        public Container New(ContainerType containerType)
+        {
+            return New(containerType, null);
         }
     }
 }
