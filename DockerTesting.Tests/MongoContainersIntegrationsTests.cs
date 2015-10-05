@@ -36,7 +36,7 @@ namespace DockerTesting.Tests
             var client = new DockerClientConfiguration(dockerUrl)
                  .CreateClient();
             var factory = new ContainerFactory(client);
-            var container = factory.New(ContainerType.MongoDb, "testmongo");
+            var container = factory.New(ContainerType.MongoDb);
 
             try
             {

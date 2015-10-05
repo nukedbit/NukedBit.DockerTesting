@@ -40,7 +40,7 @@ namespace NukedBit.DockerTesting
         public virtual async Task<IList<Port>> GetPorts()
         {
             var response = await Client.Containers.ListContainersAsync(new ListContainersParameters());
-            var container = response.SingleOrDefault(c => c.Image == Image);
+            var container = response.SingleOrDefault(c => c.Id == Id);
             return container?.Ports;
         }
 
