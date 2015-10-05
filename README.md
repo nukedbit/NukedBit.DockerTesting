@@ -18,7 +18,7 @@ Currently only mongodb container is implemented using tutum/mongodb
              .CreateClient();
         var factory = new ContainerFactory(client);
         
-        var testContainer = factory.Create(ContainerType.MongoDb, "anyname");
+        var testContainer = factory.New(ContainerType.MongoDb);
 
 ### Create Container
 
